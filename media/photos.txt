@@ -1,0 +1,20 @@
+Sunrise
+nature
+2023 4 2
+   \ | /
+ --- O ---
+   / | \
+!!endrecord!!
+Mountain
+nature
+2023 4 2
+     /\
+    /  \
+___/____\___
+!!endrecord!!
+City
+architecture
+2023 4 2
+ |##|  |##|
+_|##|__|##|_
+!!endrecord!!
