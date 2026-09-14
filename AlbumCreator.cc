@@ -50,11 +50,7 @@ void AlbumCreator::launch(){
 }
 
 
-/*
-Normally something like this would be in your PhotoFactory class, 
-so that all this complexity does not hpge to be hard-coded in
-your program. We are keeping it simple, and I wrote it for you. 
-*/
+// Load the bundled catalog titles.
 void AlbumCreator::initFromFile(){
     ifstream photoTitles;
     photoTitles.open("media/phototitles.txt");
@@ -76,7 +72,7 @@ void AlbumCreator::deleteAlbum(){
     int choice = - 1;
     int numChoices = pg.printAlbums(view);
     view.promptChoice(choice, numChoices);
-    pg.displayAlbum(choice, view);
+    if (choice < 0) return;
     pg.deleteAlbum(choice);
 }
 
@@ -111,6 +107,7 @@ void AlbumCreator::getPhotosByCandD(){
     cout<<*crit<<endl;
     currentPhotos.clear();
     pg.getPhotos(*crit, currentPhotos);
+    delete crit;
 } 
 
 void AlbumCreator::getPhotosByCat(){
@@ -120,15 +117,17 @@ void AlbumCreator::getPhotosByCat(){
     cout<<*crit<<endl;
     currentPhotos.clear();
     pg.getPhotos(*crit, currentPhotos);
+    delete crit;
 } 
 
 void AlbumCreator::getPhotosByDate(){
     Date before, after;
-    view.promptDates(before, after);
-    const Criteria* crit = mf.dateCriteria(before, after);
+    view.promptDates(after, before);
+    const Criteria* crit = mf.dateCriteria(after, before);
     cout<<*crit<<endl;    
     currentPhotos.clear();
     pg.getPhotos(*crit, currentPhotos);
+    delete crit;
 }
 
 

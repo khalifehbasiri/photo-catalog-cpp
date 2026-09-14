@@ -13,35 +13,20 @@ Date MediaFactory::toDate(const string& d){
 }
 
 // 'upload' a photo 
-Photo* MediaFactory::uploadPhoto(const string& t){
-    ifstream mediaFile;
-    mediaFile.open("media/photos.txt");
-    string temp, title, date, description, category;
-    stringstream content;
-
-    // We are assuming there is at least one record.
-    // TBH not a great assumption to make
-    cout<<"Searching for photo title: "<<t<<endl;
-    while( getline(mediaFile, title)){
-        if (t == title){
-            getline(mediaFile, category);
-            getline(mediaFile, date);
-            getline(mediaFile, temp);
-            while (temp!="!!endrecord!!"){
-                content<<temp<<endl;
-                getline(mediaFile, temp);
-            }
-            mediaFile.close();
-            return new Photo(title, category, toDate(date), content.str());
+Photo* MediaFactory::uploadPhoto(const string& wanted){
+    ifstream file("media/photos.txt");
+    string title, category, date, line;
+    while (getline(file, title)) {
+        if (!getline(file, category) || !getline(file, date)) return nullptr;
+        stringstream content;
+        bool complete = false;
+        while (getline(file, line)) {
+            if (line == "!!endrecord!!") { complete = true; break; }
+            content << line << endl;
         }
-
-        // wrong title, advance to next photo
-        while (temp!="!!endrecord!!"){
-            getline(mediaFile, temp);
-        }
+        if (!complete) return nullptr;
+        if (title == wanted) return new Photo(title, category, toDate(date), content.str());
     }
-
-    mediaFile.close();
     return nullptr;
 }
 

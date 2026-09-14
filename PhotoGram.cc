@@ -63,6 +63,7 @@ bool PhotoGram::uploadPhoto(const string& title)
         return false;
     }
     Photo* photo = mediaFactory.uploadPhoto(title);
+    if (!photo) return false;
     photos.add(photo);
     return true;
 }

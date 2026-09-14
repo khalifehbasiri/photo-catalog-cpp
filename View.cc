@@ -15,13 +15,13 @@ void View::mainMenu(const string* menu, int numOptions, int& choice)
   cout << "  (0) Exit" << endl<<endl;
 
   cout << "Enter your selection: ";
-  cin >> choice;
+  if (!(cin >> choice)) { choice = 0; return; }
   if (choice == 0)
     return;
 
   while (choice < 0 || choice > numOptions) {
     cout << "Enter your selection: ";
-    cin >> choice;
+    if (!(cin >> choice)) { choice = 0; return; }
   }
 }
 
@@ -47,21 +47,9 @@ void View::displayPhoto(const Photo& photo){
 }
 
 void View::promptChoice(int& choice, int numOptions){
-
-  cout << endl;
-  cout << "Enter the number corresponding to your selection"<< endl;
-  cout << "or select (0) to exit" << endl;
-
-  cout << "Enter your selection: ";
-  cin >> choice;
-  if (choice == 0)
-    return;
-
-  while (choice < 0 || choice > numOptions) {
-    cout << "Enter your selection: ";
-    cin >> choice;
-  }
-  --choice;
+    cout << "Select an item (1-" << numOptions << "), or 0 to cancel: ";
+    if (!(cin >> choice) || choice <= 0 || choice > numOptions) { choice = -1; return; }
+    --choice;
 }
 
 void View::promptDates(Date& after, Date& before){
